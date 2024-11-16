@@ -1,7 +1,7 @@
-FROM debian:bullseye-slim AS install
+FROM debian:stable-slim AS install
 
 ARG VRS
-ENV VERSION=${VRS:-23.0}
+ENV VERSION=${VRS:-28.0}
 RUN echo $VERSION
 
 RUN apt update && apt install -y wget gpg
@@ -20,7 +20,7 @@ RUN sha256sum --ignore-missing --check SHA256SUMS
 RUN tar xzf bitcoin-$VERSION-x86_64-linux-gnu.tar.gz
 RUN install -m 0755 -o root -g root -t /usr/bin bitcoin-$VERSION/bin/*
 
-FROM debian:bullseye-slim
+FROM debian:stable-slim
 
 COPY --from=install /usr/bin/bitcoind /usr/bin/bitcoind
 COPY --from=install /usr/bin/bitcoin-cli /usr/bin/bitcoin-cli
